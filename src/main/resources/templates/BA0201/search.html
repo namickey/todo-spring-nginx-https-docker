@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>item照会画面</title>
+</head>
+<body>
+    <div th:replace="~{common/navi :: navi('item照会画面')}"><h2>item照会画面</h2></div>
+
+    <form method="GET" th:action="@{/WBA0201/search}" action="./search.html" th:object="${itemSearchForm}">
+        <div th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
+        <div>
+            <span style="display: inline-block;width: 100px;">ITEM NAME</span>
+            <input type="text" th:field="*{itemName}" />
+            <div th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></div>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">PRICE</span>
+            <input type="text" th:field="*{price}" />
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+        </div>
+        <input type="hidden" name="page" value="0" />
+        <button type="submit">検索</button>
+    </form>
+
+    <hr/>
+
+    <div th:if="${pages}">
+        <div>総件数：<span th:text="${pages.totalElements}">5</span></div>
+    </div>
+
+    <ul th:each="item : ${itemList}">
+        <li>
+            <a th:text="${item.id}" th:href="@{/WBA0301/index(id=${item.id})}" href="../BA0301/index.html">1</a>:
+            <span th:text="${item.itemName}" style="display: inline-block;width: 150px;">ペン</span>:
+            <div style="display: inline-block;width: 100px;">
+                <span th:text="${item.price}">100円</span>円
+            </div>
+            <th:block sec:authorize="hasRole('DATA_MANAGER')">
+                <a th:href="@{/WBA0501/index(id=${item.id})}" href="../BA0501/update.html">更新</a>
+            </th:block>
+        </li>
+    </ul>
+
+    <div th:if="${pages}" class="paging">
+        <!-- 先頭のページリンク -->
+        <span>
+            <span th:if="${pages.first}">&lt;&lt;</span>
+            <a th:if="${not pages.first}" th:href="@{/WBA0201/search(page=0)}" value="1">&lt;&lt;</a>
+        </span>
+
+        <!-- 中間のページリンク -->
+        <span th:each="i:${#numbers.sequence(0, pages.totalPages-1)}">
+            <span th:if="${i}==${pages.number}" th:text="${i+1}">1</span>
+            <a th:if="${i}!=${pages.number}" th:href="@{/WBA0201/search(page=${i})}" href="search.html"><span th:text="${i+1}">2</span></a>
+        </span>
+
+        <!-- 末尾のページリンク -->
+        <span>
+            <span th:if="${pages.last}">&gt;&gt;</span>
+            <a th:if="${not pages.last}" th:href="@{/WBA0201/search(page=(${pages.totalPages-1}))}">
+                &gt;&gt;
+            </a>
+        </span>
+    </div>
+
+</body>
+</html>

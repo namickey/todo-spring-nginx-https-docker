@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>item登録画面</title>
+</head>
+<body>
+    <div th:replace="~{common/navi :: navi('item登録画面')}"><h2>item登録画面</h2></div>
+
+    <form method="POST" th:action="@{confirm}" action="./confirm.html" th:object="${itemForm}">
+        <div th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></div>
+        <div>
+            <span style="display: inline-block;width: 100px;">ID</span>
+            <input type="text" th:field="*{id}" value="1" />
+            <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">ITEM NAME</span>
+            <input type="text" th:field="*{itemName}" value="ノート" />
+            <div th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></div>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">PRICE</span>
+            <input type="text" th:field="*{price}" value="3000" />
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            <div th:if="${#fields.hasErrors('bunguPrice')}" th:errors="*{bunguPrice}"></div>
+        </div>
+
+        <div>
+            <label for="groupid" ><span style="display: inline-block;width: 100px;">分類</span></label>
+            <select
+              th:field="*{groupid}">
+                <option value=""></option>
+                <option
+                th:each="group : ${groups}"
+                th:value="${group.code}"
+                th:text="${group.label}"
+                selected
+                >
+                文具
+                </option>
+            </select>
+            <span th:if="${#fields.hasErrors('groupid')}" th:errors="*{groupid}"></span>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">登録日</span>
+            <input type="date" th:field="*{registDate}" value="2023-06-01" />
+            <div th:if="${#fields.hasErrors('registDate')}" th:errors="*{registDate}"></div>
+        </div>
+
+        
+        <button type="submit">確認</button>
+    </form>
+
+</body>
+</html>

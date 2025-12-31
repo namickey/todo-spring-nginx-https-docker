@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>item登録確認画面</title>
+</head>
+<body>
+    <div th:replace="~{common/navi :: navi('item登録確認画面')}"><h2>item登録確認画面</h2></div>
+
+    <form method="POST" th:action="@{regist}" action="./complete.html" th:object="${itemForm}">
+        <div>
+            <span style="display: inline-block;width: 100px;">ID</span>
+            <span th:text="*{id}" >1</span>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">ITEM NAME</span>
+            <span th:text="*{itemName}" >ノート</span>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">PRICE</span>
+            <span th:text="*{#numbers.formatInteger(price,1,'COMMA')}" >3,000</span>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">分類</span>
+            <span th:text="*{@itemRegistViewHelper.getGroupName(groupid)}" >文具</span>
+        </div>
+
+        <div>
+            <span style="display: inline-block;width: 100px;">登録日</span>
+            <span th:text="*{#temporals.format(registDate, 'uuuu/MM/dd')}">2023/06/01/</span>
+        </div>
+
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{itemName}" />
+        <input type="hidden" th:field="*{price}" />
+        <input type="hidden" th:field="*{groupid}" />
+        <input type="hidden" th:field="*{registDate}" />
+
+        <button type="submit" name="back">戻る</button>
+        <button type="submit" name="regist">登録</button>
+    </form>
+
+</body>
+</html>

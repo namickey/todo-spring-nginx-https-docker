@@ -1,0 +1,37 @@
+<configuration>
+    <!-- 出力先ディレクトリ -->
+    <property name="LOG_DIR" value="logs"/>
+    <!-- 共通パターン -->
+    <property name="PATTERN"
+              value="%date{ISO8601} %-15a ACC -     %-32S %-7reqAttribute{userId} %-4m %s %U [%D]"/>
+    
+    <!-- ローリングファイル -->
+    <appender name="ACCESS_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/access.log</file>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/access.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>200MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- コンソール出力 -->
+    <appender name="ACCESS_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 両方に出力 -->
+    <appender-ref ref="ACCESS_FILE"/>
+    <appender-ref ref="ACCESS_CONSOLE"/>
+</configuration>

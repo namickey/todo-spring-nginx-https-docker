@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.web.mapper.ItemMapper">
+    <!-- 登録 -->
+    <insert id="insertItem">
+        insert into item(
+            id,
+            item_name,
+            price,
+            groupid,
+            regist_date,
+            version_no
+        ) values(
+            #{id},
+            #{itemName},
+            #{price},
+            #{groupid},
+            #{registDate},
+            0
+        )
+    </insert>
+
+    <!-- 条件 -->
+    <sql id="criteria">
+        <where>
+            <if test="itemName != null and itemName != ''">
+                item_name = #{itemName}
+            </if>
+            <if test="price != null">
+                <![CDATA[
+                    and price >= #{price}
+                ]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 全件検索 -->
+    <select id="findAll" resultType="com.example.demo.entity.Item">
+        select
+            id,
+            item_name,
+            price,
+            groupid,
+            regist_date,
+            version_no
+        from
+            item
+        <include refid="criteria" />
+        order by
+            id
+        limit
+            #{pageable.pageSize}
+        offset
+            #{pageable.offset}
+    </select>
+
+    <!-- 全件カウント -->
+    <select id="countAll" resultType="long">
+        select
+            count(*)
+        from
+            item
+        <include refid="criteria" />
+    </select>
+
+    <!-- 全件検索item名称指定 -->
+    <select id="findAllByItemName" resultType="com.example.demo.entity.Item">
+        select
+            id,
+            item_name,
+            price,
+            groupid,
+            regist_date
+        from
+            item
+        where
+            item_name = #{itemName}
+    </select>
+
+    <!-- 1件削除 -->
+    <delete id="delete">
+        delete
+        from
+            item
+        where
+            id = #{id}
+            and version_no = #{versionNo}
+    </delete>
+
+    <!-- 1件検索 -->
+    <select id="findById" resultType="com.example.demo.entity.Item">
+        select
+            id,
+            item_name,
+            price,
+            groupid,
+            regist_date,
+            version_no
+        from
+            item
+        where
+            id = #{id}
+    </select>
+
+    <!-- 1件更新 -->
+    <update id="updateById">
+        update
+            item
+        set
+            <if test="itemName != null">
+                item_name = #{itemName},
+            </if>
+            price = #{price},
+            <if test="groupid != null">
+                groupid = #{groupid},
+            </if>
+            version_no = #{versionNo} + 1
+        where
+            id = #{id}
+            and version_no = #{versionNo}
+    </update>
+</mapper>

@@ -1,0 +1,12 @@
+<div th:fragment="navi(title)">
+    <nav>
+        <div style="display: flex; align-items: center;">
+            <a th:href="@{/}" style="font-size: 1.5em; margin-left: 1em;">TOP</a>
+            <span style="flex: 1;"></span>
+            ログイン中：<span th:text="${#authentication.name}" style="font-size: 1.2em; margin-right: 2em;"></span>
+            <a th:href="@{/logout}" style="font-size: 1.5em; margin-right: 3em;">ログアウト</a>
+        </div>
+        <hr>
+        <h2 th:text="${title}"></h2>
+    </nav>
+</div>

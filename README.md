@@ -71,3 +71,12 @@ API will be at http://localhost:8080/api/todos. Forwarded headers are enabled; i
 - The Nginx image generates a self-signed certificate for CN=localhost during build. Replace it with your own certs for production.
 - HTTP traffic is redirected to HTTPS by Nginx; the app trusts forwarded headers (`ForwardedHeaderFilter` and `server.forward-headers-strategy=framework`).
 - H2 is in-memory and non-persistent; replace with an external database for durable storage.
+
+## Tips
+
+> [!TIP]
+> 
+> 新人エンジニアのための今度こそ理解するSSL/TLS超入門  
+> https://zenn.dev/collabostyle/articles/ec7604c7468b84  
+> 
+
